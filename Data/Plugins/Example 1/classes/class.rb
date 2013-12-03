@@ -1,0 +1,1 @@
+puts "Example 1 class ready"

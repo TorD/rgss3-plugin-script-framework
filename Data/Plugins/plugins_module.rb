@@ -1,0 +1,134 @@
+module Plugins
+	@@plugins_register = []
+	@@bootstrap_file = ""
+	@@root_path = ""
+	@@current_path = ""
+
+	# Get the current path for the plugin being loaded
+	# Used in bootstrap files by plugins
+	def self.current_path
+		@@current_path
+	end
+
+	# Register this plugin id in the plugin register
+	# Used in bootstrap files by plugins
+	# Params:
+	# 	id: 	String object identifying the plugin
+	def self.register(id)
+		@@plugins_register << id
+		puts "Plugin registered: #{id}"
+	end
+
+	# Check if a plugin is loaded
+	# Used in bootstrap files to check if another plugin is loaded
+	# Params:
+	# 	id: 	String object identifying the plugin
+	def self.has_plugin?(id)
+		@@plugins_register.include?(id)
+	end
+
+	# Require a bootstrap file
+	# Used by the Plugin module to register the current path and load a bootstrap file, making Plugin.current_path relevant to that loaded bootstrap file
+	# Params:
+	# 	bootstrap: String object identifying bootstrap file to load, with full path
+	def self.require_bootstrap(bootstrap)
+		self.current_path = bootstrap.chomp(bootstrap_file)
+		load_script bootstrap
+	end
+
+	# Load plugins from a path in a given order
+	# Used to load all plugin folders in a given path
+	# Params hash:
+	# 	:path => String object of folder path to look for plugin subfolders
+	# 	:order => Array object specifying a list of plugin folders to load before all others (optional)
+	def self.load_plugins(opts={})
+		opts = {
+			:path => "",
+			:order => []
+		}.merge(opts)
+
+		path = opts[:path]
+		order = opts[:order]
+		loaded = []
+
+		if order && order.any?
+			order.each do |f|
+				self.require_bootstrap("#{root_path}/#{f}/#{bootstrap_file}")
+				loaded << "#{root_path}/#{f}/"
+			end
+		end
+
+		Dir.glob("#{root_path}/#{path}/#{bootstrap_file}") do |bootstrap|
+			next if loaded.include?(bootstrap.chomp(bootstrap_file))
+			self.require_bootstrap(bootstrap)
+		end
+	end
+
+	# Require files from a given path
+	# Used in bootstrap files to require plugin files
+	# Params hash:
+	# 	:path => String object of folder path to look in (optional, will then look in bootstrap path)
+	# 	:order => Array object specifying list of files to load before all others (optional)
+	def self.require_files(opts={})
+		opts = {
+			:path => "",
+			:order => []
+		}.merge(opts)
+
+		path = current_path + opts[:path]
+		order = opts[:order]
+		loaded = []
+
+		if order.any?
+			order.each do |f|
+				file = "#{path}/#{f}.rb"
+				loaded << file
+				load_script file
+			end
+		end
+
+		Dir.glob("#{path}/*.rb") do |f|
+			next if loaded.include?(f)
+			next if f.gsub("#{path}/", "") == bootstrap_file
+			load_script f
+			loaded << f
+		end
+	end
+
+	# Set root path of plugins
+	# used to specify root folder for all plugins. Should only be set once, at setup
+	# Params:
+	# 	path: 	String object; root path of plugins directory
+	def self.root_path=(path)
+		@@root_path = path
+	end
+
+	# Get root path of plugins
+	def self.root_path
+		@@root_path
+	end
+
+	# Set bootstrap file name
+	# Used to specify the filename for bootstrap files in plugins. Should only be set once, at setup
+	# Params:
+	# 	filename: 	String object; the filename of bootstrap files
+	def self.bootstrap_file=(filename)
+		@@bootstrap_file = filename
+	end
+
+	# Get filename of bootstrap files
+	def self.bootstrap_file
+		@@bootstrap_file
+	end
+
+	private
+
+	# Set current path
+	# Used to specify the current path, for use in bootstrap files and to require plugin files at the correct path.
+	# Params:
+	# 	path: String object
+	def self.current_path=(path)
+		@@current_path = path
+	end
+
+end

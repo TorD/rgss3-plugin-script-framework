@@ -1,0 +1,1 @@
+puts "Example 2 core ready"

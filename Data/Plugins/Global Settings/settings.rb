@@ -1,0 +1,1 @@
+puts "Global Settings loaded."
