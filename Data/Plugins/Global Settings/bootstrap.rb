@@ -1,2 +1,2 @@
 Plugins.register("Global Settings")
-Plugins.require_files
+Plugins.load_files

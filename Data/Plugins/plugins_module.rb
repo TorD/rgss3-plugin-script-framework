@@ -3,6 +3,7 @@ module Plugins
 	@@bootstrap_file = ""
 	@@root_path = ""
 	@@current_path = ""
+	@@scripts = []
 
 	# Get the current path for the plugin being loaded
 	# Used in bootstrap files by plugins
@@ -31,7 +32,7 @@ module Plugins
 	# Used by the Plugin module to register the current path and load a bootstrap file, making Plugin.current_path relevant to that loaded bootstrap file
 	# Params:
 	# 	bootstrap: String object identifying bootstrap file to load, with full path
-	def self.require_bootstrap(bootstrap)
+	def self.load_bootstrap(bootstrap)
 		self.current_path = bootstrap.chomp(bootstrap_file)
 		load_script bootstrap
 	end
@@ -53,14 +54,14 @@ module Plugins
 
 		if order && order.any?
 			order.each do |f|
-				self.require_bootstrap("#{root_path}/#{f}/#{bootstrap_file}")
+				self.load_bootstrap("#{root_path}/#{f}/#{bootstrap_file}")
 				loaded << "#{root_path}/#{f}/"
 			end
 		end
 
 		Dir.glob("#{root_path}/#{path}/#{bootstrap_file}") do |bootstrap|
 			next if loaded.include?(bootstrap.chomp(bootstrap_file))
-			self.require_bootstrap(bootstrap)
+			self.load_bootstrap(bootstrap)
 		end
 	end
 
@@ -69,7 +70,7 @@ module Plugins
 	# Params hash:
 	# 	:path => String object of folder path to look in (optional, will then look in bootstrap path)
 	# 	:order => Array object specifying list of files to load before all others (optional)
-	def self.require_files(opts={})
+	def self.load_files(opts={})
 		opts = {
 			:path => "",
 			:order => []
@@ -83,16 +84,44 @@ module Plugins
 			order.each do |f|
 				file = "#{path}/#{f}.rb"
 				loaded << file
-				load_script file
+				@@scripts << file
 			end
 		end
 
 		Dir.glob("#{path}/*.rb") do |f|
 			next if loaded.include?(f)
 			next if f.gsub("#{path}/", "") == bootstrap_file
-			load_script f
+			@@scripts << f
 			loaded << f
 		end
+	end
+
+	def self.package
+		scripts = ""
+		@@scripts.each do |s|
+			begin
+				scripts += File.open(s).read + "\n"
+			rescue
+				# Do nothing
+			end
+		end
+
+		begin
+			file = File.open("#{root_path}/scripts.rb", 'w')
+		rescue
+			# We are in encrypted mode, do nothing
+		end
+
+		return if file.nil? # If file is nil, it cannot be accessed, which means the game is running with an encrypted archive. If so, we do not write the scripts file.
+
+		begin
+			file.write(scripts)
+		rescue IOError => e
+			raise "Could not write scripts file; is the plugins folder writable?"
+		ensure
+			file.close unless file == nil
+		end
+		
 	end
 
 	# Set root path of plugins

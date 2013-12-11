@@ -23,3 +23,9 @@ Plugins.bootstrap_file = BOOTSTRAP_FILE
 Plugins.load_plugins(
 	:path => "*",
 	:order => PRIORITY_PLUGINS)
+
+# Package all plugin scripts into a single scripts file, so that it also works in encrypted environments
+Plugins.package
+
+# Now load all the plugin scripts
+load_script("#{ROOT_PATH}/scripts.rb")

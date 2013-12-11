@@ -1,1 +1,0 @@
-puts "Global Settings loaded."
