@@ -1,8 +1,8 @@
 module Plugins
 	@@plugins_register = []
 	@@bootstrap_file = "bootstrap.rb"
-	@@root_path = nil
-	@@current_path = "#{@@root_path}/"
+	@@root_path = ""
+	@@current_path = ""
 	@@scripts = []
 
 	# Get the current path for the plugin being loaded
@@ -82,7 +82,7 @@ module Plugins
 			:exclude => []
 		}.merge(opts)
 
-		path = opts[:path]
+		path = current_path + opts[:path]
 		order = opts[:order]
 		exclude = opts[:exclude]
 		loaded = []
