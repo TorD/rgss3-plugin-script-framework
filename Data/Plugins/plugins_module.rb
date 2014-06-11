@@ -1,8 +1,8 @@
 module Plugins
 	@@plugins_register = []
-	@@bootstrap_file = ""
-	@@root_path = ""
-	@@current_path = ""
+	@@bootstrap_file = "bootstrap.rb"
+	@@root_path = "Data/Plugins"
+	@@current_path = "#{@@root_path}/"
 	@@scripts = []
 
 	# Get the current path for the plugin being loaded
@@ -42,18 +42,22 @@ module Plugins
 	# Params hash:
 	# 	:path => String object of folder path to look for plugin subfolders
 	# 	:order => Array object specifying a list of plugin folders to load before all others (optional)
+	# 	:exclude => Array object specifiying a list of plugin folders to exclude (optional)
 	def self.load_plugins(opts={})
 		opts = {
 			:path => "",
-			:order => []
+			:order => [],
+			:exclude => []
 		}.merge(opts)
 
 		path = opts[:path]
 		order = opts[:order]
+		exclude = opts[:exclude]
 		loaded = []
 
 		if order && order.any?
 			order.each do |f|
+				next if exclude.include?(f)
 				self.load_bootstrap("#{root_path}/#{f}/#{bootstrap_file}")
 				loaded << "#{root_path}/#{f}/"
 			end
@@ -70,18 +74,22 @@ module Plugins
 	# Params hash:
 	# 	:path => String object of folder path to look in (optional, will then look in bootstrap path)
 	# 	:order => Array object specifying list of files to load before all others (optional)
+	# 	:exclude => Array object specifiying a list of files to exclude (optional)
 	def self.load_files(opts={})
 		opts = {
 			:path => "",
-			:order => []
+			:order => [],
+			:exclude => []
 		}.merge(opts)
 
-		path = current_path + opts[:path]
+		path = opts[:path]
 		order = opts[:order]
+		exclude = opts[:exclude]
 		loaded = []
 
 		if order.any?
 			order.each do |f|
+				next if exclude.include?(f)
 				file = "#{path}/#{f}.rb"
 				loaded << file
 				@@scripts << file
@@ -89,10 +97,26 @@ module Plugins
 		end
 
 		Dir.glob("#{path}/*.rb") do |f|
+			next if exclude.include?(f.chomp(".rb").split("/").last)
 			next if loaded.include?(f)
 			next if f.gsub("#{path}/", "") == bootstrap_file
 			@@scripts << f
 			loaded << f
+		end
+	end
+
+	def self.load_recursive(plugins, local_path=nil)
+		plugins.each_pair do |path, opts|
+			sub = opts.select{|key, val| key.is_a? String}
+			opts = opts.delete_if{|key, val| key.is_a? String}
+			if local_path
+				path = "#{local_path}/#{path}"
+			else
+				path = "#{root_path}/#{path}"
+			end
+			opts[:path] = path
+			load_files(opts)
+			load_recursive(sub, path) unless sub.empty?
 		end
 	end
 

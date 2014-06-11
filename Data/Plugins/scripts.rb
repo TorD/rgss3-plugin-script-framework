@@ -1,6 +1,6 @@
-
-puts "Example 1 module ready"
+puts "Global Settings loaded"
 puts "Example 1 class ready"
+puts "Example 1 module ready"
 puts "Example 2 data ready"
 puts "Example 2 core ready"
 puts "Example 3 system ready"
@@ -11,3 +11,5 @@ class TDD
 		puts "Extension called"
 	end
 end
+puts "Example 3 sub 1 loaded"
+puts "Example 3 sub 2 loaded"
