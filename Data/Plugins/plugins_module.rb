@@ -1,3 +1,22 @@
+#==============================================================================
+# ** TDD Plugins Module
+#------------------------------------------------------------------------------
+# Version:  1.1.0
+# Date:     06/11/2014
+# Author:   Galenmereth / Tor Damian Design
+#
+# Changelog
+# =========
+# Version 1.1.0: Introduced the exclude option, and the load_recursive method
+# Version 1.0.1: Fixed various smaller bugs
+# 
+# Description
+# ===========
+# This module allows you to load script files in a more intuitive and organized
+# manner than in the default editor in RPG Maker VXAce. You can sort your
+# scripts in folders and subfolders, specify order independent of filename,
+# and exclude specific files.
+#==============================================================================
 module Plugins
 	@@plugins_register = []
 	@@bootstrap_file = "bootstrap.rb"
