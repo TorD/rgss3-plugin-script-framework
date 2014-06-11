@@ -1,5 +1,13 @@
+# This is the root plugin directory (the one this file resides in).
+ROOT_PATH = "Data/Plugins"
+
+# We then load the plugins module file that takes care of all the magic
 load_script "Data/Plugins/plugins_module.rb"
 
+# We then the plugins module where the root path is
+Plugins.root_path = ROOT_PATH
+
+# Now we set up our folder structure with options
 plugins = {
   "Global Settings" => {},
   "Example 1" => {
@@ -7,7 +15,8 @@ plugins = {
                       # any parameters within its hash value will be evaluated as options
                       # for that folder. You can nest subfolders infinitely
     "modules" => {
-      exclude: ["exclude me"] # If you specify an exclude array, those files will not be loaded
+      exclude: ["exclude me"] # If you specify an exclude array, those files will not be loaded.
+                              # Typing .rb behind the filename is not necessary.
     }
   },
   "Example 2" => {
@@ -20,20 +29,8 @@ plugins = {
   }
 }
 
+# Load folder structure using load_recursive
 Plugins.load_recursive(plugins)
-
-# REQUIRED: This is the root plugin directory (the one this file resides in).
-ROOT_PATH = "Data/Plugins"
-
-# REQUIRED: This is the bootstrap filename that the Plugin module should look for in plugins.
-BOOTSTRAP_FILE = "bootstrap.rb"
-
-# REQUIRED: We load all the plugins found in the ROOT_PATH folder. The :order param includes the above specified PRIORITY_PLUGIN_FOLDERS array.
-# If you don't have any need for prioritizing plugins, simply call it without any params, like the line commented out below
-# Plugins.load_plugins
-# Plugins.load_plugins(
-# 	:path => "*",
-# 	:order => PRIORITY_PLUGIN_FOLDERS)
 
 # Package all plugin scripts into a single scripts file, so that it also works in encrypted environments
 Plugins.package

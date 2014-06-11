@@ -1,7 +1,7 @@
 module Plugins
 	@@plugins_register = []
 	@@bootstrap_file = "bootstrap.rb"
-	@@root_path = "Data/Plugins"
+	@@root_path = nil
 	@@current_path = "#{@@root_path}/"
 	@@scripts = []
 
