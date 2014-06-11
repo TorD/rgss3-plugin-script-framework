@@ -65,18 +65,15 @@ module Plugins
 	def self.load_plugins(opts={})
 		opts = {
 			:path => "",
-			:order => [],
-			:exclude => []
+			:order => []
 		}.merge(opts)
 
 		path = opts[:path]
 		order = opts[:order]
-		exclude = opts[:exclude]
 		loaded = []
 
 		if order && order.any?
 			order.each do |f|
-				next if exclude.include?(f)
 				self.load_bootstrap("#{root_path}/#{f}/#{bootstrap_file}")
 				loaded << "#{root_path}/#{f}/"
 			end
