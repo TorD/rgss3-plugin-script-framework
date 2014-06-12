@@ -23,7 +23,7 @@ plugins = {
     order: [  # If you specify an order array for a folder, those files will be loaded first
     "data",
     :rest,    # If you insert the symbol :rest into the order array, all files not mentioned
-              # in the order array will be inserted between here and the remainding order items.
+              # in the order array will be inserted between here and the remaining order items.
               # This means that you can easily sort some scripts before and after all the rest.
     "insert last"
     ]
