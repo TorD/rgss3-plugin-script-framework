@@ -101,7 +101,7 @@ module Plugins
 
 		path = current_path + opts[:path]
 		order = opts[:order]
-		exclude = opts[:exclude]
+		exclude = opts[:exclude] || []
 		loaded = []
 
 		insert_spot = nil
