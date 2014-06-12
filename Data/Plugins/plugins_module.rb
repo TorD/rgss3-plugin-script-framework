@@ -2,7 +2,7 @@
 # ** TDD Plugins Module
 #------------------------------------------------------------------------------
 # Version:  1.1.1
-# Date:     06/11/2014
+# Date:     06/12/2014
 # Author:   Galenmereth / Tor Damian Design
 #
 # Changelog
