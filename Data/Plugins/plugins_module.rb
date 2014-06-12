@@ -1,12 +1,13 @@
 #==============================================================================
 # ** TDD Plugins Module
 #------------------------------------------------------------------------------
-# Version:  1.1.0
+# Version:  1.1.1
 # Date:     06/11/2014
 # Author:   Galenmereth / Tor Damian Design
 #
 # Changelog
 # =========
+# Version 1.1.1: Implemented the :rest symbol feature in order arrays
 # Version 1.1.0: Introduced the exclude option, and the load_recursive method
 # Version 1.0.1: Fixed various smaller bugs
 # 
@@ -103,21 +104,30 @@ module Plugins
 		exclude = opts[:exclude]
 		loaded = []
 
+		insert_spot = nil
+
 		if order.any?
 			order.each do |f|
 				next if exclude.include?(f)
+				if f == :rest
+					insert_spot = @@scripts.count
+					next
+				end
 				file = "#{path}/#{f}.rb"
 				loaded << file
 				@@scripts << file
 			end
 		end
 
+		insert_spot = @@scripts.count if insert_spot.nil?
+
 		Dir.glob("#{path}/*.rb") do |f|
 			next if exclude.include?(f.chomp(".rb").split("/").last)
 			next if loaded.include?(f)
 			next if f.gsub("#{path}/", "") == bootstrap_file
-			@@scripts << f
+			@@scripts.insert(insert_spot, f)
 			loaded << f
+			insert_spot += 1
 		end
 	end
 
