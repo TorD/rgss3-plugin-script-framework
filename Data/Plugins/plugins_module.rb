@@ -103,7 +103,8 @@ module Plugins
 		order = opts[:order]
 		exclude = opts[:exclude] || []
 		loaded = []
-		insert_spot = @@scripts.count
+		
+		insert_spot = nil
 
 		if order.any?
 			order.each do |f|
@@ -117,6 +118,8 @@ module Plugins
 				@@scripts << file
 			end
 		end
+
+		insert_spot ||= @@scripts.count 
 
 		Dir.glob("#{path}/*.rb") do |f|
 			next if exclude.include?(f.chomp(".rb").split("/").last)
@@ -176,7 +179,7 @@ module Plugins
 	# Params:
 	# 	path: 	String object; root path of plugins directory
 	def self.root_path=(path)
-		@@root_path = "Data/#{path}"
+		@@root_path = path
 	end
 
 	# Get root path of plugins
