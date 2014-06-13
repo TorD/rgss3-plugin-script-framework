@@ -108,8 +108,26 @@ To use the Plugin Framework, you will need two files in your "Data/Plugins" fold
 
 An additional undocumented and minifed setup file has been included, called [setup_blank.rb](https://github.com/TorD/rgss3-plugin-script-framework/blob/master/Data/Plugins/setup_blank.rb). Use this when you know how it all works and don't want the comments and explanations in your project :)
 
+The scripts.rb file
+===================
+This is a file generated in your plugins directory every time you test your project in RPG Maker VXAce. It is generated for compatibility with Ace's encryption mode (when you export your game to a standalone executable, and select encrypted archive). **You should never edit this file yourself**; edit the scripts individually, and **test the game to autogenerate it**.
+
+**Important:** As this file is generated when you test your game, it is important that you **always test your game** after you perform changes to your scripts. This is not only required, but also good coding practice, since you should never ship an untested game!
+
 Todo
 ====
 Expanded explanations and documentation (in the form of GitHub wiki pages)
+
+License
+=======
+Free for commercial and non-commercial use with credits. Please credits all names mentioned in the below credits section. Thank you.
+
+Credits
+=======
+* Tsukihime for the "External Script Loader" script
+* Galenmereth / Tor Damian for the Plugin Framework
+
+
+
 
 _The Empire Never Ended_
