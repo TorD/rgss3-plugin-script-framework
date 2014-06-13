@@ -8,25 +8,6 @@
 # file, just delete setup.rb and rename this file into setup.rb
 #==============================================================================
 plugins = {
-  "Global Settings" => {},
-  "Example 1" => {
-    "classes" => {},
-    "modules" => {
-      exclude: ["exclude me"]
-    }
-  },
-  "Example 2" => {
-    order: [
-    "data",
-    :rest,
-    "insert last"
-    ]
-  },
-  "Example 3" => {
-    "sub 1" => {
-      "sub 2" => {}
-    }
-  }
 }
 ROOT_PATH = "Plugins"
 load_script "Data/#{ROOT_PATH}/plugins_module.rb"
