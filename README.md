@@ -8,6 +8,10 @@ The Plugin Framework aims to make your life easier by doing the following:
 * Exclude files using simple options. This is handled using arrays, and you can implement your own logic for how to do this smartly. Examples will be provided.
 * Compatibility: The Framework requires no special structuring of scripts, and is therefore **compatible with all existing scripts**.
 
+Download
+========
+This repository consists of the demo project and the required file. You can download the whole thing as a zip file by clicking the [here](https://github.com/TorD/rgss3-plugin-script-framework/archive/master.zip) (or clicking the "Download ZIP" button at the bottom of the right-hand navbar) 
+
 Installation in RPG Maker VXAce
 ===============================
 The framework consists of two parts; one that goes into the script editor in RPG Maker VXAce (to make it actually load the framework), and two files which should be placed within "Your Project Directory/Data/Plugins". The "Plugins" folder can be named whatever you want (like "Scripts"?) but you *must* place it within your Data directory. This is so that the whole thing works in encrypted projects, which put restrictions of placement of external files.
