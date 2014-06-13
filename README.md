@@ -120,7 +120,7 @@ Expanded explanations and documentation (in the form of GitHub wiki pages)
 
 License
 =======
-Free for commercial and non-commercial use with credits. Please credits all names mentioned in the below credits section. Thank you.
+Free for commercial and non-commercial use with credits. Please credit all names mentioned in the credits section below.
 
 Credits
 =======
