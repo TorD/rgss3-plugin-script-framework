@@ -103,8 +103,7 @@ module Plugins
 		order = opts[:order]
 		exclude = opts[:exclude] || []
 		loaded = []
-
-		insert_spot = nil
+		insert_spot = @@scripts.count
 
 		if order.any?
 			order.each do |f|
@@ -118,8 +117,6 @@ module Plugins
 				@@scripts << file
 			end
 		end
-
-		insert_spot = @@scripts.count if insert_spot.nil?
 
 		Dir.glob("#{path}/*.rb") do |f|
 			next if exclude.include?(f.chomp(".rb").split("/").last)
