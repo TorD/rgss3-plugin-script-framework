@@ -125,7 +125,7 @@ plugins = { # Do not remove
 #=======================+
 # Configuration of path |
 #=======================+
-# The following should be set to the folder within your project's data folder
+# The following should be set to the folder within your project's Data folder
 # where the plugin folders and plugin framework resides. The below value is
 # default and where it's placed in the Plugins Framework demo project.
 # You don't specify your project's folder name nor the data folder; only the
@@ -143,7 +143,7 @@ load_script "Data/#{ROOT_PATH}/plugins_module.rb"
 # Setting up and starting the Plugins module |
 #============================================+
 # We tell the plugins module where the root path is (the folder where these
-# files resist within your project's data folder, specified earlier). This is
+# files resist within your project's Data folder, specified earlier). This is
 # necessary because we need absolute paths if we encrypt our game later on.
 Plugins.root_path = ROOT_PATH
 
